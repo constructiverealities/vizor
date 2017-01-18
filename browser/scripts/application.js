@@ -24,6 +24,7 @@ function Application() {
 		PAUSED: 2
 	}
 
+	this.isEditor = true
 	this.canvas = E2.dom.canvas;
 	this.breadcrumb = null;
 	this.c2d = E2.dom.canvas[0].getContext('2d');

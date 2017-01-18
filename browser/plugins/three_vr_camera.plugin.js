@@ -55,7 +55,7 @@
 			that.offset.set(that.state.position.x, that.state.position.y, that.state.position.z)
 		})
 
-		E2.app.player.camera = this
+		E2.app.player.cameraPlugin = this
 	}
 
 	ThreeVRCameraPlugin.prototype = Object.create(Plugin.prototype)
@@ -93,16 +93,7 @@
 			this.dolly = new THREE.PerspectiveCamera()
 
 		if (!this.vrControlCamera) {
-			// try to find out default fov from the device
-			// use hardware here for early detection
-			if (hardware.hmd) {
-			}
-
-			this.vrControlCamera = new THREE.PerspectiveCamera(
-				this.defaultFOV,
-				this.domElement.clientWidth / this.domElement.clientHeight,
-				0.001,
-				1000)
+			this.vrControlCamera = E2.app.player.vrControlCamera
 
 			// layer is for mono camera only
 			this.vrControlCamera.layers.enable(3)

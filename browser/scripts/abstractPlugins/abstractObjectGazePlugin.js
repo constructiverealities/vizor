@@ -65,9 +65,7 @@
 		this.boundSetupChosenObject = this.setupChosenObject.bind(this)
 		this.boundOnGraphNodesChanged = this.onGraphNodesChanged.bind(this)
 
-		this.node.on('pluginStateChanged', function() {
-			that.setupChosenObject()
-		})
+		this.node.on('pluginStateChanged', this.boundSetupChosenObject)
 
 		this.state.nodeRef = null
 		this.state.type = 0
@@ -93,6 +91,9 @@
 		if (!this.object3d.gazeClickers)
 			this.object3d.gazeClickers = {}
 
+		if (this.object3d.gazeClickers[this.node.uid])
+			return;
+
 		this.object3d.gazeClickers[this.node.uid] = true
 		this.object3d.gazeClickerCount = Object.keys(this.object3d.gazeClickers).length
 
@@ -106,7 +107,7 @@
 
 		this.targetNode.plugin.updated = true
 
-		E2.app.player.scene.hasClickableObjects = true
+		E2.player.scene.hasClickableObjects = true
 
 		E2.core.runtimeEvents.on('gazeOut:'+this.object3d.uuid, this.boundOnGazeOut)
 		E2.core.runtimeEvents.on('gazeIn:'+this.object3d.uuid, this.boundOnGazeIn)
@@ -115,6 +116,9 @@
 
 	AbstractObjectGazePlugin.prototype.clearClickerOnObject = function() {
 		if (!this.object3d)
+			return;
+
+		if (!this.object3d.gazeClickers || !this.object3d.gazeClickers[this.node.uid])
 			return;
 
 		delete this.object3d.gazeClickers[this.node.uid]
@@ -280,8 +284,18 @@
 			if (this.state.nodeRef)
 				ui.find('.object-sel').val(this.state.nodeRef)
 		} else {
-			if (this.state.nodeRef)
+			if (this.state.nodeRef) {
 				this.setupChosenObject()
+			} else {
+				// default to containing Entity
+				if (this.node.parent_graph.plugin instanceof AbstractEntityPlugin) {
+					var meshNodes = findMeshNodes(this.node.parent_graph)
+					if (!meshNodes.length)
+						return;
+					this.state.nodeRef = meshNodes[0].getFullUid()
+					this.setupChosenObject()
+				}
+			}
 		}
 	}
 

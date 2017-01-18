@@ -34,6 +34,13 @@ function Player() {
 	this.core.active_graph = this.core.root_graph = new Graph(this.core, null, 'root')
 	this.core.graphs.push(this.core.root_graph)
 
+	var canvas = E2.dom.webgl_canvas[0]
+	this.vrControlCamera = new THREE.PerspectiveCamera(
+				90,
+				canvas.clientWidth / canvas.clientHeight,
+				0.001,
+				1000)
+
 	this.boundOnAnimFrame = this.on_anim_frame.bind(this)
 }
 
@@ -236,7 +243,7 @@ Player.prototype.loadAndPlay = function(url) {
 Player.prototype.getScreenshot = function(width, height) {
 	width = width || 1280
 	height = height || 720
-	var ssr = new ScreenshotRenderer(this.scene, this.camera.vrControlCamera)
+	var ssr = new ScreenshotRenderer(this.scene, this.cameraPlugin)
 	return ssr.capture(width, height)
 }
 
