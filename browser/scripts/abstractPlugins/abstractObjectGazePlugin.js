@@ -107,7 +107,7 @@
 
 		this.targetNode.plugin.updated = true
 
-		E2.player.scene.hasClickableObjects = true
+		E2.app.player.scene.hasClickableObjects = true
 
 		E2.core.runtimeEvents.on('gazeOut:'+this.object3d.uuid, this.boundOnGazeOut)
 		E2.core.runtimeEvents.on('gazeIn:'+this.object3d.uuid, this.boundOnGazeIn)
