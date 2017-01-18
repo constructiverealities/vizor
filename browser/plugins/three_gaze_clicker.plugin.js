@@ -85,7 +85,7 @@
 		this.input = new RayInput.default(this.camera, E2.core.renderer.domElement)
 		this.input.setSize(E2.core.renderer.getSize())
 
-		this.input.on('raydown', (mesh) => {
+		this.input.on('raydown', function(mesh) {
 			if (!mesh || E2.app.worldEditor.isActive())
 				return;
 
@@ -93,7 +93,7 @@
 			E2.core.runtimeEvents.emit('gazeClicked:'+mesh.uuid)
 		})
 
-		this.input.on('rayover', (mesh) => {
+		this.input.on('rayover', function(mesh) {
 			el.style.cursor = 'pointer'
 
 			if (!mesh || E2.app.worldEditor.isActive())
@@ -103,7 +103,7 @@
 			E2.core.runtimeEvents.emit('gazeIn:'+mesh.uuid)
 		})
 
-		this.input.on('rayout', (mesh) => {
+		this.input.on('rayout', function(mesh) {
 			el.style.cursor = ''
 
 			if (!mesh || E2.app.worldEditor.isActive())
